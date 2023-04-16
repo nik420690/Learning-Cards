@@ -1,0 +1,38 @@
+name: Electron Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Electron.js
+      run: |
+        npm install -g electron@latest
+
+    - name: Install Playwright
+      run: |
+        npm install -g playwright
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests with Playwright
+      run: npx playwright test
+
+    - name: Publish test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: Test Results
+        path: test-results/
